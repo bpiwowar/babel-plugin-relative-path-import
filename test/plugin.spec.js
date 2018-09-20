@@ -1,4 +1,4 @@
-import * as babel from 'babel-core';
+import * as babel from '@babel/core';
 import slash from 'slash';
 
 import BabelRootImportPlugin from '../plugin';
@@ -24,7 +24,7 @@ describe('Babel Root Import - Plugin', () => {
 				[
 					BabelRootImportPlugin,
 					{
-						rootPathSuffix: 'some/custom/root'
+						"@": 'some/custom/root'
 					}
 				]
 			]
@@ -34,7 +34,7 @@ describe('Babel Root Import - Plugin', () => {
 				[
 					BabelRootImportPlugin,
 					{
-						rootPathSuffix: 'some/custom/root'
+						"@": 'some/custom/root'
 					}
 				]
 			]
@@ -48,16 +48,10 @@ describe('Babel Root Import - Plugin', () => {
 		const plugins = [
 			[
 				BabelRootImportPlugin,
-				[
-					{
-						rootPathPrefix: '~',
-						rootPathSuffix: 'some1/custom/root'
-					},
-					{
-						rootPathPrefix: '@some',
-						rootPathSuffix: 'some2/custom/root/some'
-					}
-				]
+				{
+						'~': 'some1/custom/root',
+						'@some': 'some2/custom/root/some'
+				}
 			]
 		];
 
@@ -90,7 +84,7 @@ describe('Babel Root Import - Plugin', () => {
 				[
 					BabelRootImportPlugin,
 					{
-						rootPathPrefix: '@'
+						'@': null
 					}
 				]
 			]
@@ -100,7 +94,7 @@ describe('Babel Root Import - Plugin', () => {
 				[
 					BabelRootImportPlugin,
 					{
-						rootPathPrefix: '@'
+						'@': null
 					}
 				]
 			]
@@ -117,7 +111,7 @@ describe('Babel Root Import - Plugin', () => {
 				[
 					BabelRootImportPlugin,
 					{
-						rootPathPrefix: '@'
+						'@': null
 					}
 				]
 			]
@@ -127,7 +121,7 @@ describe('Babel Root Import - Plugin', () => {
 				[
 					BabelRootImportPlugin,
 					{
-						rootPathPrefix: '@'
+						'@': null
 					}
 				]
 			]
@@ -143,7 +137,7 @@ describe('Babel Root Import - Plugin', () => {
 				[
 					BabelRootImportPlugin,
 					{
-						rootPathPrefix: '/'
+						'/': null
 					}
 				]
 			]
@@ -153,13 +147,11 @@ describe('Babel Root Import - Plugin', () => {
 				[
 					BabelRootImportPlugin,
 					{
-						rootPathPrefix: '/'
+						'/': null
 					}
 				]
 			]
 		});
-
-		expect(transformedImport.code).to.contain(targetRequire);
 		expect(transformedRequire.code).to.contain(targetRequire);
 	});
 
@@ -170,7 +162,7 @@ describe('Babel Root Import - Plugin', () => {
 				[
 					BabelRootImportPlugin,
 					{
-						rootPathPrefix: '-'
+						'-': null
 					}
 				]
 			]
@@ -180,7 +172,7 @@ describe('Babel Root Import - Plugin', () => {
 				[
 					BabelRootImportPlugin,
 					{
-						rootPathPrefix: '-'
+						'-': null
 					}
 				]
 			]
@@ -197,8 +189,7 @@ describe('Babel Root Import - Plugin', () => {
 				[
 					BabelRootImportPlugin,
 					{
-						rootPathPrefix: '@',
-						rootPathSuffix: 'some'
+						'@': 'some'
 					}
 				]
 			]
@@ -208,8 +199,7 @@ describe('Babel Root Import - Plugin', () => {
 				[
 					BabelRootImportPlugin,
 					{
-						rootPathPrefix: '@',
-						rootPathSuffix: 'some'
+						'@': 'some'
 					}
 				]
 			]
@@ -222,14 +212,14 @@ describe('Babel Root Import - Plugin', () => {
 	it('transforms a multipart require path with string at the beginning', () => {
 		const targetRequire1 = slash(`'./some/' + 'example.js'`);
 		const transformedRequire1 = babel.transform("var SomeExample = require('@/some/' + 'example.js');", {
-			plugins: [BabelRootImportPlugin]
+			plugins: [BabelRootImportPlugin, {}]
 		});
 
 		expect(transformedRequire1.code).to.contain(targetRequire1);
 
 		const targetRequire2 = slash(`'./some/' + 'other' + 'example.js'`);
 		const transformedRequire2 = babel.transform("var SomeExample = require('@/some/' + 'other' + 'example.js');", {
-			plugins: [BabelRootImportPlugin]
+			plugins: [BabelRootImportPlugin, {}]
 		});
 
 		expect(transformedRequire2.code).to.contain(targetRequire2);
@@ -248,16 +238,10 @@ describe('Babel Root Import - Plugin', () => {
 		const plugins = [
 			[
 				BabelRootImportPlugin,
-				[
-					{
-						rootPathPrefix: '@',
-						rootPathSuffix: 'some1/custom/root'
-					},
-					{
-						rootPathPrefix: '@some2',
-						rootPathSuffix: '../../some2/custom/../custom/root'
-					}
-				]
+				{
+					'@': 'some1/custom/root',
+					'@some2': '../../some2/custom/../custom/root'
+				}
 			]
 		];
 
